@@ -121,7 +121,11 @@ jobs:
       - name: 🛂 Checkout the right backend version
         run: 'git checkout ${{ env.backend_version }}'
       - name: 🛃 Find the version based on code
-        run: 'echo "api_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV'
+        run: 'echo "api_version=$(mvn  help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV'
+        if: ${{ matrix.os != 'windows-latest' }}
+      - name: 🛃 Find the version based on code (windows)
+        run: 'echo "api_version=$(mvn --% help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV'
+        if: ${{ matrix.os == 'windows-latest' }}
       - name: 🚧 Remove default html resources
         run: 'rm api/src/main/resources/META-INF/resources/index.html'
       - name: 📨 Retrieve saved dist folder
